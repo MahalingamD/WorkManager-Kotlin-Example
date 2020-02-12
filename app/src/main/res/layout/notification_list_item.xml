@@ -63,7 +63,7 @@
                 android:layout_gravity="top|center"
                 android:background="@drawable/imwall_circle_left"
                 android:padding="15dp"
-                android:src="@drawable/ic_sync"
+                android:src="@drawable/ic_spa"
                 android:tint="#FFF" />
 
 
@@ -96,10 +96,12 @@
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/tasktype_img"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
                     android:layout_alignParentEnd="true"
-                    app:srcCompat="@drawable/ic_sync" />
+                    app:srcCompat="@drawable/ic_favorite"
+                    android:padding="5dp"
+                    app:tint="#D50000" />
 
             </RelativeLayout>
 
