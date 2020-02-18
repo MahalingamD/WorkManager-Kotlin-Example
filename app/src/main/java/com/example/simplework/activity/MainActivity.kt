@@ -77,9 +77,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun button2Click(view: View) {
-      //  startActivity(Intent(this, ThirdActivity::class.java))
+        startActivity(Intent(this, ThirdActivity::class.java))
           //view.button2.setBackgroundResource(R.drawable.shake_anim)
-        rocketAnimation.start()
+        //rocketAnimation.start()
     }
 
     fun button3Click(view: View) {
