@@ -35,6 +35,13 @@ android {
     }
 }
 
+ext {
+    supportLibrary = '28.0.0'
+    retrofitVersion = '2.6.0'
+    FirebaseVersion = '17.2.0'
+    Glide = '4.9.0'
+}
+
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
@@ -48,6 +55,11 @@ dependencies {
     implementation "androidx.work:work-runtime-ktx:$work_version"
 
     kapt "com.android.databinding:compiler:$gradle_version"
+
+
+    implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
+    implementation "com.squareup.retrofit2:converter-gson:$retrofitVersion"
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.13.1'
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.1.1'

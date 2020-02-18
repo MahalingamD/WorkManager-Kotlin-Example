@@ -87,4 +87,9 @@ class MainActivity : AppCompatActivity() {
     }
 
 
+    fun button4Click(view: View) {
+        startActivity(Intent(this, FourthActivity::class.java))
+    }
+
+
 }
