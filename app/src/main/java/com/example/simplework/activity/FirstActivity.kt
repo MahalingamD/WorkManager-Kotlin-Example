@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.work.*
 import com.example.simplework.R
+import com.example.simplework.utils.Logger
 import com.example.simplework.worker.OneTimeWorker
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
@@ -26,6 +27,8 @@ class FirstActivity : AppCompatActivity() {
         setContentView(R.layout.activity_first)
 
         init()
+
+        Logger().e("asa","Show error")
     }
 
 

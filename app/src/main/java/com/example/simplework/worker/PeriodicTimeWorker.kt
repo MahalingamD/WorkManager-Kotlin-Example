@@ -2,10 +2,11 @@ package com.example.simplework.worker
 
 import android.content.Context
 import android.util.Log
+import androidx.work.Data
 import androidx.work.Worker
 import androidx.work.WorkerParameters
 
-class PeriodicTimeWorker(context: Context, workerParams: WorkerParameters) : Worker(
+class PeriodicTimeWorker(context: Context, val workerParams: WorkerParameters) : Worker(
     context,
     workerParams
 ) {
@@ -13,6 +14,15 @@ class PeriodicTimeWorker(context: Context, workerParams: WorkerParameters) : Wor
 
         Log.e("Periodic", "PeriodicTimeWorker")
 
-        return Result.success()
+        val aData = workerParams.inputData
+
+        Log.e("User ", "" + aData.getString("username") ?: "1")
+        Log.e("Password ", "" + aData.getString("password") ?: "1")
+
+        return Result.success(createOutputData())
+    }
+
+    private fun createOutputData(): Data {
+        return Data.Builder().putString("Success", "1").build()
     }
 }

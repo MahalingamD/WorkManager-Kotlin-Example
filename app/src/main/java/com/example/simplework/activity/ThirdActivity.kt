@@ -17,6 +17,7 @@ class ThirdActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityThirdBinding
     lateinit var aPeriodicWork: PeriodicWorkRequest
+    lateinit var  mPeroidRequest:PeriodicWorkRequest.Builder
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,15 +27,35 @@ class ThirdActivity : AppCompatActivity() {
 
         binding.act = this
 
+        setWrokManager()
 
 
-        aPeriodicWork = PeriodicWorkRequestBuilder<PeriodicTimeWorker>(
+
+    }
+
+    /**
+     * TODO
+     * call work manager every 15 minutes
+     */
+    private fun setWrokManager() {
+       /* aPeriodicWork = PeriodicWorkRequestBuilder<PeriodicTimeWorker>(
             15,
             TimeUnit.MINUTES,
             10,
             TimeUnit.MINUTES
-        ).setConstraints(setConstraint()).build()
+        ).setConstraints(setConstraint())
+            .setInputData(createInputData())
+            .setBackoffCriteria(
+                BackoffPolicy.LINEAR,
+                OneTimeWorkRequest.MIN_BACKOFF_MILLIS,
+                TimeUnit.MILLISECONDS)
 
+            .build()*/
+
+
+        mPeroidRequest=PeriodicWorkRequest.Builder(PeriodicTimeWorker::class.java,15,TimeUnit.MINUTES)
+            .setConstraints(setConstraint())
+         aPeriodicWork=mPeroidRequest.build()
     }
 
 
@@ -43,7 +64,7 @@ class ThirdActivity : AppCompatActivity() {
         return Constraints.Builder()
             .setRequiredNetworkType(NetworkType.CONNECTED) // check internet connectivity
             .setRequiresBatteryNotLow(true) // check battery level
-            .setRequiresCharging(true) // check charging mode
+            //.setRequiresCharging(true) // check charging mode
             // .setRequiresStorageNotLow(true) // check storage
             // .setRequiresDeviceIdle(false) // check device idle state
             .build()
@@ -51,8 +72,11 @@ class ThirdActivity : AppCompatActivity() {
     }
 
     fun startTask(aView: View) {
-        WorkManager.getInstance(this)
-            .enqueueUniquePeriodicWork("UNIQUE", ExistingPeriodicWorkPolicy.REPLACE, aPeriodicWork)
+        /*WorkManager.getInstance(this)
+            .enqueueUniquePeriodicWork("UNIQUE", ExistingPeriodicWorkPolicy.KEEP, aPeriodicWork)*/
+
+        WorkManager.getInstance(this).enqueue(aPeriodicWork)
+
 
         WorkManager.getInstance(this).getWorkInfoByIdLiveData(aPeriodicWork.id).observe(this,
             Observer {
@@ -60,21 +84,28 @@ class ThirdActivity : AppCompatActivity() {
                     when (it.state) {
 
                         WorkInfo.State.SUCCEEDED -> {
-                            //val myResult = it.outputData.getString("Success")
-                           // Log.e("Out put", myResult)
+                            val myResult = it.outputData.getString("Success")
+                            Log.e("Out put", myResult?:"")
                             Log.e("STATUS", "SUCCEEDED")
                         }
-
                         WorkInfo.State.RUNNING -> {
+                            val myResult = it.outputData.getString("Success")
+                            Log.e("Out put", myResult?:"")
                             Log.e("STATUS", "RUNNING")
                         }
-
                         WorkInfo.State.CANCELLED -> {
                             Log.e("STATUS", "CANCELLED")
                         }
-
                         WorkInfo.State.FAILED -> {
                             Log.e("STATUS", "FAILED")
+                        }
+                        WorkInfo.State.ENQUEUED -> {
+                            val myResult = it.outputData.getString("Success")
+                            Log.e("Out put", myResult?:"")
+                            Log.e("STATUS", "ENQUEUED")
+                        }
+                        WorkInfo.State.BLOCKED -> {
+                            Log.e("STATUS", "BLOCKED")
                         }
                         else -> {
                             Log.e("STATUS", "STATUS")
@@ -87,6 +118,22 @@ class ThirdActivity : AppCompatActivity() {
     }
 
     fun cancelTask(aView: View) {
+        WorkManager.getInstance(this).cancelUniqueWork("UNIQUE")
+    }
+
+    private fun createInputData(): Data {
+
+        return Data.Builder()
+            .putString("username", "Maha")
+            .putString("password", "Lingam").build()
+
+
+    }
+
+
+    override fun onDestroy() {
+        super.onDestroy()
+        WorkManager.getInstance(this).cancelAllWork()
         WorkManager.getInstance(this).cancelUniqueWork("UNIQUE")
     }
 

@@ -14,6 +14,7 @@ import androidx.databinding.DataBindingUtil
 import com.example.simplework.R
 import com.example.simplework.databinding.ActivityMainBinding
 import com.example.simplework.model.Taskinfo
+import com.example.simplework.utils.Logger
 import kotlinx.android.synthetic.main.activity_main.view.*
 
 class MainActivity : AppCompatActivity() {
@@ -36,7 +37,17 @@ class MainActivity : AppCompatActivity() {
             rocketAnimation = background as AnimationDrawable
         }
 
-        init()
+
+        val quotient = 285 / 60
+        val remainder = 285 % 60
+
+        val aFinalSleepHrs= "$quotient.${remainder.toString()[0]}"
+
+       // Log.e("Final string",aFinalSleepHrs)
+
+        Logger().e("Final string",aFinalSleepHrs)
+
+       // init()
     }
 
     private fun init() {
@@ -77,6 +88,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun button2Click(view: View) {
+        Logger().e("Final string","button2Click")
+
         startActivity(Intent(this, ThirdActivity::class.java))
           //view.button2.setBackgroundResource(R.drawable.shake_anim)
         //rocketAnimation.start()
