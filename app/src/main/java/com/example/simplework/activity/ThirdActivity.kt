@@ -10,6 +10,7 @@ import androidx.work.*
 import com.example.simplework.R
 import com.example.simplework.databinding.ActivityMainBinding
 import com.example.simplework.databinding.ActivityThirdBinding
+import com.example.simplework.utils.Logger
 import com.example.simplework.worker.PeriodicTimeWorker
 import java.util.concurrent.TimeUnit
 
@@ -55,6 +56,7 @@ class ThirdActivity : AppCompatActivity() {
 
         mPeroidRequest=PeriodicWorkRequest.Builder(PeriodicTimeWorker::class.java,15,TimeUnit.MINUTES)
             .setConstraints(setConstraint())
+            .addTag("Test")
          aPeriodicWork=mPeroidRequest.build()
     }
 
@@ -80,6 +82,11 @@ class ThirdActivity : AppCompatActivity() {
 
         WorkManager.getInstance(this).getWorkInfoByIdLiveData(aPeriodicWork.id).observe(this,
             Observer {
+
+            val  aList=  it.tags.filter { it.equals("Test",ignoreCase = true) }
+
+
+
                 if (it != null) {
                     when (it.state) {
 
@@ -119,6 +126,7 @@ class ThirdActivity : AppCompatActivity() {
 
     fun cancelTask(aView: View) {
         WorkManager.getInstance(this).cancelUniqueWork("UNIQUE")
+        WorkManager.getInstance(this).cancelAllWork()
     }
 
     private fun createInputData(): Data {

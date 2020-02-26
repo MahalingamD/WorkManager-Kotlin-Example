@@ -18,8 +18,10 @@ class PeriodicTimeWorker(context: Context, val workerParams: WorkerParameters) :
 
         Log.e("User ", "" + aData.getString("username") ?: "1")
         Log.e("Password ", "" + aData.getString("password") ?: "1")
+        val adata=createOutputData()
 
-        return Result.success(createOutputData())
+
+        return Result.success(adata)
     }
 
     private fun createOutputData(): Data {
